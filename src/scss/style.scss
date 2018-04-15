@@ -1,11 +1,23 @@
 /* CSS Document */
 
-*, *:before, *:after {
+*,
+*::before,
+*::after {
   -webkit-box-sizing: border-box;
   -moz-box-sizing: border-box;
   -o-box-sizing: border-box;
   -ms-box-sizing: border-box;
   box-sizing: border-box;
+}
+
+img,
+video,
+object {
+  max-width: 100%;
+  height: auto;
+  border: none;
+  vertical-align: bottom;
+  display: block;
 }
 
 body {
@@ -28,19 +40,11 @@ a:hover {
 a:hover img {
   text-decoration: none;
   opacity: 0.8;
-  -webkit-transition: all .3s;
-  -moz-transition: all .3s;
-  -ms-transition: all .3s;
-  -o-transition: all .3s;
-  transition: all .3s;
-}
-
-img, video, object {
-  max-width: 100%;
-  height: auto;
-  border: none;
-  vertical-align: bottom;
-  display: block;
+  -webkit-transition: all 0.3s;
+  -moz-transition: all 0.3s;
+  -ms-transition: all 0.3s;
+  -o-transition: all 0.3s;
+  transition: all 0.3s;
 }
 
 #backToTop {
@@ -56,13 +60,12 @@ img, video, object {
   color: #fff;
   padding: 15px;
   font-weight: bold;
-
   background-color: #47c79d;
 }
 
-/*--------------------------------
+/* --------------------------------
 　全体
----------------------------------*/
+--------------------------------- */
 
 .inner {
   max-width: 1000px;
@@ -71,9 +74,9 @@ img, video, object {
   padding: 0 10px;
 }
 
-/*--------------------------------
+/* --------------------------------
 　header
----------------------------------*/
+--------------------------------- */
 
 #header {
   background-color: #ccc;
@@ -84,17 +87,17 @@ img, video, object {
   text-decoration: none;
 }
 
-/*--------------------------------
+/* --------------------------------
 　globalnavi
----------------------------------*/
+--------------------------------- */
 
 .gnav {
   background-color: #eee;
 }
 
-/*--------------------------------
+/* --------------------------------
 　section
----------------------------------*/
+--------------------------------- */
 
 .section {
   background-color: #ddd;
@@ -102,9 +105,9 @@ img, video, object {
   padding: 10px 0;
 }
 
-/*--------------------------------
+/* --------------------------------
   Footer
----------------------------------*/
+--------------------------------- */
 
 #footer {
   background-color: #aaa;
@@ -126,8 +129,9 @@ img, video, object {
   color: #333;
 }
 
-/*media Queries 767
-----------------------------------------------------*/
+/* media Queries 767
+---------------------------------------------------- */
 
-@media screen and (max-width: 767px) {
-}
+//@media screen and (max-width: 767px) {
+//
+//}

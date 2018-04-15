@@ -3,7 +3,6 @@
   "version": "0.0.1",
   "license": "MIT",
   "dependencies": {
-    "eslint-plugin-import": "^2.10.0",
     "jquery": "^3.3.1"
   },
   "devDependencies": {
@@ -12,18 +11,22 @@
     "browserify": "^16.1.1",
     "chokidar-cli": "^1.2.0",
     "cpx": "^1.5.0",
-    "ejs-cli": "^2.0.1",
     "eslint": "^4.19.1",
     "eslint-config-standard": "^11.0.0",
+    "eslint-plugin-import": "^2.11.0",
     "eslint-plugin-node": "^6.0.1",
     "eslint-plugin-promise": "^3.7.0",
     "eslint-plugin-standard": "^3.0.1",
     "glob-run": "^0.1.6",
     "globar": "^0.11.0",
+    "htmlhint": "^0.9.13",
+    "js-beautify": "^1.7.5",
     "node-sass": "^4.8.3",
     "npm-run-all": "^4.1.2",
     "postcss-cli": "^5.0.0",
-    "rimraf": "^2.6.2"
+    "rimraf": "^2.6.2",
+    "stylelint": "^9.2.0",
+    "stylelint-config-standard": "^18.2.0"
   },
   "scripts": {
     "start": "npm-run-all clean:dist build -p server watch",
@@ -31,24 +34,33 @@
     "server:reload": "browser-sync reload",
     "clean:dist": "rimraf dist/",
     "clean:htdocs": "rimraf htdocs/",
+
     "build": "npm-run-all -p build:*",
-    "build:html": "ejs-cli --base-dir src/ejs/ './**/[^_]*.ejs' --out ./dist/ && yarn run server:reload",
+    "build:html": "cpx 'src/html/**/*.html' dist && yarn run server:reload",
     "build:css": "npm-run-all -s build:css:* && yarn run server:reload",
     "build:css:scss": "node-sass ./src/scss/ -o ./dist/css/",
     "build:css:autoprefixer": "postcss --use autoprefixer -r ./dist/css/**/*.css",
     "build:js": "globar src/js/**/*.js --outfile=dist/js && yarn run server:reload",
     "build:img": "cpx 'src/img/**/*.{jpg,png,svg,gif,ico}' dist/img",
+
     "export": "npm-run-all clean:htdocs -p export:*",
-    "export:ejs": "ejs-cli --base-dir src/ejs/ './**/[^_]*.ejs' --out ./htdocs/",
+    "export:html": "cpx 'src/html/**/*.html' dist",
     "export:scss": "node-sass ./src/scss/ -o ./htdocs/css/ --output-style compressed",
     "export:autoprefixer": "postcss --use autoprefixer --no-map -r ./htdocs/css/**/*.css",
+
     "watch": "npm-run-all -p watch:*",
-    "watch:html": "chokidar 'src/ejs/**/*.ejs' -c 'npm run build:ejs'",
+    "watch:html": "chokidar 'src/html/**/*.html' -c 'npm run build:ejs'",
     "watch:css": "chokidar 'src/scss/**/*.scss' -c 'npm run build:css'",
     "watch:js": "chokidar 'src/js/**/*.js' -c 'npm run build:js'",
     "watch:img": "chokidar 'src/img/**/*' -c 'npm run build:img'",
+
+    "lint": "npm-run-all -p lint:*",
+    "lint:html": "htmlhint 'src/html/**/*.html'",
+    "lint:scss": "stylelint 'src/scss/**/*.scss'",
     "lint:js": "eslint src/js",
-    "lint:js:fix": "eslint src/js --fix"
+    "lint:js:fix": "eslint src/js --fix",
+
+    "format:html": "glob-run js-beautify -html --editorconfig -r -U false src/html/\\**/\\*.html"
   },
   "engines": {
     "node": ">= 8"
