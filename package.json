@@ -30,8 +30,10 @@
   },
   "scripts": {
     "start": "npm-run-all clean:dist build -p server watch",
+
     "server": "browser-sync start --server ./dist",
     "server:reload": "browser-sync reload",
+
     "clean:dist": "rimraf dist/",
     "clean:htdocs": "rimraf htdocs/",
 
@@ -43,26 +45,37 @@
     "build:js": "globar src/js/**/*.js --outfile=dist/js && yarn run server:reload",
     "build:img": "cpx 'src/img/**/*.{jpg,png,svg,gif,ico}' dist/img",
 
-    "export": "npm-run-all clean:htdocs -p export:*",
-    "export:html": "cpx 'src/html/**/*.html' dist",
-    "export:scss": "node-sass ./src/scss/ -o ./htdocs/css/ --output-style compressed",
-    "export:autoprefixer": "postcss --use autoprefixer --no-map -r ./htdocs/css/**/*.css",
+    "export": "npm-run-all lint clean:htdocs -p export:*",
+    "export:html": "cpx 'src/html/**/*.html' htdocs",
+    "export:css": "npm-run-all -s export:css:*",
+    "export:css:scss": "node-sass ./src/scss/ -o ./htdocs/css/ --output-style compressed",
+    "export:css:autoprefixer": "postcss --use autoprefixer --no-map -r ./htdocs/css/**/*.css",
+    "export:js": "globar src/js/**/*.js --outfile=htdocs/js",
+    "export:img": "cpx 'src/img/**/*.{jpg,png,svg,gif,ico}' htdocs/img",
 
     "watch": "npm-run-all -p watch:*",
-    "watch:html": "chokidar 'src/html/**/*.html' -c 'npm run build:ejs'",
-    "watch:css": "chokidar 'src/scss/**/*.scss' -c 'npm run build:css'",
+    "watch:html": "chokidar 'src/html/**/*.html' -c 'npm run build:html'",
+    "watch:scss": "chokidar 'src/scss/**/*.scss' -c 'npm run build:css'",
     "watch:js": "chokidar 'src/js/**/*.js' -c 'npm run build:js'",
     "watch:img": "chokidar 'src/img/**/*' -c 'npm run build:img'",
 
     "lint": "npm-run-all -p lint:*",
     "lint:html": "htmlhint 'src/html/**/*.html'",
     "lint:scss": "stylelint 'src/scss/**/*.scss'",
-    "lint:js": "eslint src/js",
-    "lint:js:fix": "eslint src/js --fix",
+    "lint:js": "eslint src/js/**/*.js",
 
+    "lintfix": "npm-run-all -p lintfix:*",
+    "lintfix:scss": "stylelint 'src/scss/**/*.scss' --fix",
+    "lintfix:js": "eslint src/js/**/*.js --fix",
+
+    "format": "npm-run-all -p lintfix:* format:*",
     "format:html": "glob-run js-beautify -html --editorconfig -r -U false src/html/\\**/\\*.html"
   },
   "engines": {
     "node": ">= 8"
-  }
+  },
+  "browserslist": [
+    "last 2 versions",
+    "ie >= 11"
+  ]
 }

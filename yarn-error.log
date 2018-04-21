@@ -1,8 +1,8 @@
 Arguments: 
-  /Users/tmyk/.anyenv/envs/ndenv/versions/v8.10.0/bin/node /Users/tmyk/.anyenv/envs/ndenv/versions/v8.10.0/bin/yarn run format:html
+  /Users/tomoyukiakimoto/.anyenv/envs/ndenv/versions/v8.10.0/bin/node /Users/tomoyukiakimoto/.anyenv/envs/ndenv/versions/v8.10.0/bin/yarn run lintfix:scss
 
 PATH: 
-  /Users/tmyk/.anyenv/envs/ndenv/versions/v8.10.0/bin:/Users/tmyk/.anyenv/envs/ndenv/libexec:/Users/tmyk/.anyenv/envs/ndenv/plugins/node-build/bin:/Users/tmyk/.anyenv/envs/ndenv/shims:/Users/tmyk/.anyenv/envs/ndenv/bin:/Users/tmyk/.anyenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
+  /Users/tomoyukiakimoto/.anyenv/envs/ndenv/versions/v8.10.0/bin:/Users/tomoyukiakimoto/.anyenv/envs/ndenv/libexec:/Users/tomoyukiakimoto/.anyenv/envs/ndenv/plugins/node-build/bin:/Users/tomoyukiakimoto/.anyenv/envs/ndenv/shims:/Users/tomoyukiakimoto/.anyenv/envs/ndenv/bin:/Users/tomoyukiakimoto/.anyenv/bin:/usr/local/bin:/usr/bin:/bin:/usr/sbin:/sbin
 
 Yarn version: 
   1.5.1
@@ -46,10 +46,13 @@ npm manifest:
     },
     "scripts": {
       "start": "npm-run-all clean:dist build -p server watch",
+  
       "server": "browser-sync start --server ./dist",
       "server:reload": "browser-sync reload",
+  
       "clean:dist": "rimraf dist/",
       "clean:htdocs": "rimraf htdocs/",
+  
       "build": "npm-run-all -p build:*",
       "build:html": "cpx 'src/html/**/*.html' dist && yarn run server:reload",
       "build:css": "npm-run-all -s build:css:* && yarn run server:reload",
@@ -57,21 +60,32 @@ npm manifest:
       "build:css:autoprefixer": "postcss --use autoprefixer -r ./dist/css/**/*.css",
       "build:js": "globar src/js/**/*.js --outfile=dist/js && yarn run server:reload",
       "build:img": "cpx 'src/img/**/*.{jpg,png,svg,gif,ico}' dist/img",
-      "export": "npm-run-all clean:htdocs -p export:*",
-      "export:html": "cpx 'src/html/**/*.html' dist",
-      "export:scss": "node-sass ./src/scss/ -o ./htdocs/css/ --output-style compressed",
-      "export:autoprefixer": "postcss --use autoprefixer --no-map -r ./htdocs/css/**/*.css",
+  
+      "export": "npm-run-all lint clean:htdocs -p export:*",
+      "export:html": "cpx 'src/html/**/*.html' htdocs",
+      "export:css": "npm-run-all -s export:css:*",
+      "export:css:scss": "node-sass ./src/scss/ -o ./htdocs/css/ --output-style compressed",
+      "export:css:autoprefixer": "postcss --use autoprefixer --no-map -r ./htdocs/css/**/*.css",
+      "export:js": "globar src/js/**/*.js --outfile=htdocs/js",
+      "export:img": "cpx 'src/img/**/*.{jpg,png,svg,gif,ico}' htdocs/img",
+  
       "watch": "npm-run-all -p watch:*",
-      "watch:html": "chokidar 'src/html/**/*.html' -c 'npm run build:ejs'",
-      "watch:css": "chokidar 'src/scss/**/*.scss' -c 'npm run build:css'",
+      "watch:html": "chokidar 'src/html/**/*.html' -c 'npm run build:html'",
+      "watch:scss": "chokidar 'src/scss/**/*.scss' -c 'npm run build:css'",
       "watch:js": "chokidar 'src/js/**/*.js' -c 'npm run build:js'",
       "watch:img": "chokidar 'src/img/**/*' -c 'npm run build:img'",
+  
       "lint": "npm-run-all -p lint:*",
       "lint:html": "htmlhint 'src/html/**/*.html'",
       "lint:scss": "stylelint 'src/scss/**/*.scss'",
-      "lint:js": "eslint src/js",
-      "lint:js:fix": "eslint src/js --fix",
-      "format:html": "glob-run js-beautify -html --editorconfig -r -U false src/html/\\**/\\*.html",
+      "lint:js": "eslint src/js/**/*.js",
+  
+      "lintfix": "npm-run-all -p lintfix:*",
+      "lintfix:scss": "stylelint 'src/scss/**/*.scss' --fix",
+      "lintfix:js": "eslint src/js/**/*.js --fix",
+  
+      "format": "npm-run-all -p lintfix:* format:*",
+      "format:html": "glob-run js-beautify -html --editorconfig -r -U false src/html/\\**/\\*.html"
     },
     "engines": {
       "node": ">= 8"
@@ -5884,10 +5898,17 @@ Lockfile:
     resolved "https://registry.yarnpkg.com/yeast/-/yeast-0.1.2.tgz#008e06d8094320c372dbc2f8ed76a0ca6c8ac419"
 
 Trace: 
-  SyntaxError: /Users/tmyk/Documents/task/html5-basic-template-taskrunner/develop/package.json: Unexpected token } in JSON at position 2462
-      at JSON.parse (<anonymous>)
-      at /Users/tmyk/.anyenv/envs/ndenv/versions/v8.10.0/lib/node_modules/yarn/lib/cli.js:1036:59
-      at Generator.next (<anonymous>)
-      at step (/Users/tmyk/.anyenv/envs/ndenv/versions/v8.10.0/lib/node_modules/yarn/lib/cli.js:98:30)
-      at /Users/tmyk/.anyenv/envs/ndenv/versions/v8.10.0/lib/node_modules/yarn/lib/cli.js:109:13
-      at <anonymous>
+  Error: Command failed.
+  Exit code: 2
+  Command: sh
+  Arguments: -c stylelint 'src/scss/**/*.scss' --fix
+  Directory: /Users/tomoyukiakimoto/Documents/tmyk/html5-basic-template-taskrunner
+  Output:
+  
+      at ProcessTermError.MessageError (/Users/tomoyukiakimoto/.anyenv/envs/ndenv/versions/v8.10.0/lib/node_modules/yarn/lib/cli.js:186:110)
+      at new ProcessTermError (/Users/tomoyukiakimoto/.anyenv/envs/ndenv/versions/v8.10.0/lib/node_modules/yarn/lib/cli.js:226:113)
+      at ChildProcess.<anonymous> (/Users/tomoyukiakimoto/.anyenv/envs/ndenv/versions/v8.10.0/lib/node_modules/yarn/lib/cli.js:30281:17)
+      at emitTwo (events.js:126:13)
+      at ChildProcess.emit (events.js:214:7)
+      at maybeClose (internal/child_process.js:925:16)
+      at Process.ChildProcess._handle.onexit (internal/child_process.js:209:5)
